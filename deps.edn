@@ -1,1 +1,5 @@
-{}
+{:deps
+ {hiccup-custom-elements
+  {;:local/root "/Users/danielbraun/github/repos/danielbraun/hiccup-custom-elements"
+   :git/url "https://github.com/danielbraun/hiccup-custom-elements"
+   :sha "f3f49d042b3b627c2bd4554bf0fc75c8f32ea9df"}}}
