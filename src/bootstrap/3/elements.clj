@@ -111,8 +111,7 @@
       [:meta {:name "viewport"
               :content "width=device-width, initial-scale=1"}]
       [:title title]
-      #_[:link {:href (str base-url "/css/bootstrap.min.css")
-                :rel :stylesheet}]
+      [:link {:href (str base-url "/css/bootstrap.min.css") :rel :stylesheet}]
       (when rtl?
         [:link {:href "https://cdn.rawgit.com/morteza/bootstrap-rtl/v3.3.4/dist/css/bootstrap-rtl.min.css"
                 :rel :stylesheet}])
@@ -127,4 +126,42 @@
       [:script {:src (str base-url "/js/bootstrap.min.js")}]
       extra-script]]))
 
+(defn- carousel-item [item]
+  (cond
+    (string? item) [:img {:src item}]
+    (map? item) [:img item]
+    (vector? item) item))
 
+(defmethod render-element ::carousel [_ {:keys [id]
+                                         :as attrs
+                                         :or {id "carousel-ex1"}}
+                                      [slides]]
+  (let [data-target (str "#" (name id))]
+    [:div.carousel.slide
+     {:data-ride "carousel"
+      :id id}
+     [:ol.carousel-indicators
+      (->> slides
+           (map-indexed (fn [i _]
+                          [:li {:class {:active (zero? i)}
+                                :data-slide-to i
+                                :data-target data-target}])))]
+     [:div.carousel-inner
+      {:role :listbox}
+      (->> slides
+           (map-indexed (fn [i item]
+                          [:div.item {:class {:active (zero? i)}}
+                           (carousel-item item)
+                           [:div.carousel-caption (get-in item [1 :title])]])))]
+     [:a.left.carousel-control
+      {:data-slide :prev,
+       :role :button,
+       :href data-target}
+      [::glyphicon :chevron-left]
+      [:span.sr-only "Previous"]]
+     [:a.right.carousel-control
+      {:data-slide :next,
+       :role :button,
+       :href  data-target}
+      [::glyphicon :chevron-right]
+      [:span.sr-only  "Next"]]]))
