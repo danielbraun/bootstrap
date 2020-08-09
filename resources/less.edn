@@ -1,0 +1,3 @@
+{:imports ["bootstrap/less/bootstrap.less"
+           "bootstrap-rtl/less/bootstrap-rtl.less"]
+ :variables {:icon-font-path "./fonts/"}}
